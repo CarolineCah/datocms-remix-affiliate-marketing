@@ -1,17 +1,17 @@
-import { Link } from 'remix';
-import { useLoaderData } from 'remix';
-import styles from '~/styles/index.css';
-import { datoQuerySubscription } from '~/lib/datocms';
-import { Image, useQuerySubscription } from 'react-datocms';
-import { responsiveImageFragment } from '~/lib/fragments';
-import { Avatar, links as avatarLinks } from '~/components/Avatar';
-import { Date, links as dateLinks } from '~/components/Date';
+import { Link } from "remix";
+import { useLoaderData } from "remix";
+import styles from "~/styles/index.css";
+import { datoQuerySubscription } from "~/lib/datocms";
+import { Image, useQuerySubscription } from "react-datocms";
+import { responsiveImageFragment } from "~/lib/fragments";
+import { Avatar, links as avatarLinks } from "~/components/Avatar";
+import { Date, links as dateLinks } from "~/components/Date";
 
 export function links() {
   return [
     ...avatarLinks(),
     ...dateLinks(),
-    { rel: 'stylesheet', href: styles },
+    { rel: "stylesheet", href: styles },
   ];
 }
 
@@ -47,15 +47,19 @@ export default function Index() {
   const { datoQuerySubscription } = useLoaderData();
 
   const {
-    data: { posts: [firstPost, ...otherPosts] },
+    data: {
+      posts: [firstPost, ...otherPosts],
+    },
   } = useQuerySubscription(datoQuerySubscription);
 
   return (
     <div className="container">
       <section className="section">
         <div className="flex">
-          <h1 className="title">Remix Blog</h1>
-          <h4 className="subtitle">A blog example using Remix and DatoCMS.</h4>
+          <h1 className="title">Javascript, React and CSS blog</h1>
+          <h4 className="subtitle">
+            Interactive articles with focus on React, Javascript and CSS.
+          </h4>
         </div>
       </section>
       <section className="section">
