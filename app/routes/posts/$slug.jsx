@@ -1,28 +1,28 @@
-import { Link } from 'remix';
-import { useLoaderData } from 'remix';
-import invariant from 'tiny-invariant';
-import styles from '~/styles/index.css';
-import { datoQuerySubscription } from '~/lib/datocms';
-import { responsiveImageFragment, metaTagsFragment } from '~/lib/fragments';
-import { Avatar, links as avatarLinks } from '~/components/Avatar';
-import { Date, links as dateLinks } from '~/components/Date';
+import { Link } from "remix";
+import { useLoaderData } from "remix";
+import invariant from "tiny-invariant";
+import styles from "~/styles/index.css";
+import { datoQuerySubscription } from "~/lib/datocms";
+import { responsiveImageFragment, metaTagsFragment } from "~/lib/fragments";
+import { Avatar, links as avatarLinks } from "~/components/Avatar";
+import { Date, links as dateLinks } from "~/components/Date";
 import {
   StructuredText,
   Image,
   toRemixMeta,
   useQuerySubscription,
-} from 'react-datocms';
+} from "react-datocms";
 
 export function links() {
   return [
     ...avatarLinks(),
     ...dateLinks(),
-    { rel: 'stylesheet', href: styles },
+    { rel: "stylesheet", href: styles },
   ];
 }
 
 export const loader = async ({ request, params }) => {
-  invariant(params.slug, 'expected params.slug');
+  invariant(params.slug, "expected params.slug");
 
   return datoQuerySubscription({
     request,
@@ -112,7 +112,7 @@ export default function PostSlug() {
     <div className="container">
       <section className="section">
         <Link to="/" className="grid__link">
-          <p className="section__title">Remix Blog.</p>
+          <p className="section__title">Programming blog.</p>
         </Link>
       </section>
       <section className="section">
@@ -130,7 +130,7 @@ export default function PostSlug() {
           <StructuredText
             data={post.content}
             renderBlock={({ record }) => {
-              if (record.__typename === 'ImageBlockRecord') {
+              if (record.__typename === "ImageBlockRecord") {
                 return (
                   <Image
                     className="grid__image"

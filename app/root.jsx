@@ -7,18 +7,18 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-} from 'remix';
+} from "remix";
 import {
   renderMetaTags,
   toRemixMeta,
   useQuerySubscription,
-} from 'react-datocms';
-import styles from '~/styles/global.css';
-import { metaTagsFragment } from '~/lib/fragments';
-import { datoQuerySubscription } from '~/lib/datocms';
+} from "react-datocms";
+import styles from "~/styles/global.css";
+import { metaTagsFragment } from "~/lib/fragments";
+import { datoQuerySubscription } from "~/lib/datocms";
 
 export function links() {
-  return [{ rel: 'stylesheet', href: styles }];
+  return [{ rel: "stylesheet", href: styles }];
 }
 
 export const loader = async ({ request }) => {
@@ -59,10 +59,6 @@ export default function App() {
     data: { site },
   } = useQuerySubscription(datoQuerySubscription);
 
-  const previewEnabled =
-    datoQuerySubscription.enabled === undefined ||
-    datoQuerySubscription.enabled === true;
-
   return (
     <html lang="en">
       <head>
@@ -73,23 +69,10 @@ export default function App() {
         {renderMetaTags([...site.favicon])}
       </head>
       <body>
-        <div className="preview">
-          {previewEnabled ? (
-            <Form method="post" action="/preview/stop">
-              This is page is showing draft content. <button>Click here</button>{' '}
-              to exit preview mode.
-            </Form>
-          ) : (
-            <Form method="post" action="/preview/start">
-              This is page is showing published content.{' '}
-              <button>Click here</button> to enter preview mode!
-            </Form>
-          )}
-        </div>
         <Outlet />
         <ScrollRestoration />
         <Scripts />
-        {process.env.NODE_ENV === 'development' && <LiveReload />}
+        {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>
   );
