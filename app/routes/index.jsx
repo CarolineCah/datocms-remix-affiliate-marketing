@@ -56,7 +56,7 @@ export default function Index() {
     <div className="container">
       <section className="section">
         <div className="flex">
-          <h1 className="title">Javascript, React and CSS blog</h1>
+          <h1 className="title">Learn Javascript, CSS and HTML</h1>
           <h4 className="subtitle">
             Interactive articles with focus on React, Javascript and CSS.
           </h4>
