@@ -80,7 +80,17 @@ export const loader = async ({ request, params }) => {
               url(imgixParams: {fm: jpg, fit: crop, w: 100, h: 100, sat: -100})
             }
           }
-        }
+          content {
+              id
+              options {
+                option1
+                option2
+                option3
+                id
+                _modelApiKey
+              }
+            }
+          }
       }
       ${responsiveImageFragment}
       ${metaTagsFragment}
@@ -105,14 +115,16 @@ export default function PostSlug() {
   const { datoQuerySubscription } = useLoaderData();
 
   const {
-    data: { post, morePosts },
+    data: { post, morePosts, quiz },
   } = useQuerySubscription(datoQuerySubscription);
+
+  console.log(quiz, "quiz");
 
   return (
     <div className="container">
       <section className="section">
         <Link to="/" className="grid__link">
-          <p className="section__title">Programming blog.</p>
+          <p className="section__title">CodewCaro.</p>
         </Link>
       </section>
       <section className="section">
@@ -148,6 +160,30 @@ export default function PostSlug() {
             }}
           />
         </div>
+      </section>
+      <section className="section">
+        <div className="section__title">Quiz</div>
+        <ul className="grid">
+          {morePosts.map((post) => (
+            <li key={post.slug} className="grid__item">
+              <Link to={`/posts/${post.slug}`} className="grid__link">
+                <div>
+                  <Image
+                    className="grid__image"
+                    data={post.coverImage.responsiveImage}
+                  />
+                  <p className="grid__title">{post.title}</p>
+                  <Date dateString={post.date} />
+                  <p className="date">{post.excerpt}</p>
+                  <Avatar
+                    name={post.author.name}
+                    picture={post.author.picture}
+                  />
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
       <section className="section">
         <div className="section__title">More posts</div>
