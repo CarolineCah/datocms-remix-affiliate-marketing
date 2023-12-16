@@ -6,12 +6,15 @@ import { datoQuerySubscription } from "~/lib/datocms";
 import { responsiveImageFragment, metaTagsFragment } from "~/lib/fragments";
 import { Avatar, links as avatarLinks } from "~/components/Avatar";
 import { Date, links as dateLinks } from "~/components/Date";
-import {
-  StructuredText,
-  Image,
-  toRemixMeta,
-  useQuerySubscription,
-} from "react-datocms";
+import { Image, toRemixMeta, useQuerySubscription } from "react-datocms";
+import { CodeSpan, CodeBlock } from "./style";
+import Prism from "prismjs";
+import "prismjs/themes/prism.css";
+import "prismjs/plugins/line-numbers/prism-line-numbers.css";
+import "prismjs/plugins/line-numbers/prism-line-numbers.js";
+import { useEffect } from "react";
+import "prismjs/components/prism-bash";
+import "prismjs/components/prism-json";
 
 export function links() {
   return [
@@ -80,16 +83,6 @@ export const loader = async ({ request, params }) => {
               url(imgixParams: {fm: jpg, fit: crop, w: 100, h: 100, sat: -100})
             }
           }
-          content {
-              id
-              options {
-                option1
-                option2
-                option3
-                id
-                _modelApiKey
-              }
-            }
           }
       }
       ${responsiveImageFragment}
@@ -101,24 +94,45 @@ export const loader = async ({ request, params }) => {
   });
 };
 
-export const meta = ({
-  data: {
-    datoQuerySubscription: {
-      initialData: { post },
-    },
-  },
-}) => {
-  return toRemixMeta(post.seo);
-};
+export const meta = ({ data }) =>
+  toRemixMeta(data.datoQuerySubscription.initialData.post.seo);
 
 export default function PostSlug() {
   const { datoQuerySubscription } = useLoaderData();
-
   const {
-    data: { post, morePosts, quiz },
+    data: { post, morePosts },
   } = useQuerySubscription(datoQuerySubscription);
 
-  console.log(quiz, "quiz");
+  useEffect(() => {
+    Prism.highlightAll();
+  }, []);
+
+  const renderContent = (content) => {
+    const renderedContent = [];
+
+    content.document.children.forEach((item, index) => {
+      if (item.type === "paragraph") {
+        const paragraph = item.children.map((child, childIndex) => {
+          if (child.marks && child.marks.includes("code")) {
+            return <CodeSpan key={childIndex}>{child.value}</CodeSpan>;
+          } else {
+            return <span key={childIndex}>{child.value}</span>;
+          }
+        });
+
+        renderedContent.push(<p key={index}>{paragraph}</p>);
+      } else if (item.type === "code") {
+        const language = item.language || "javascript";
+        return renderedContent.push(
+          <CodeBlock className="line-numbers" key={index}>
+            <code className={`language-${language}`}>{item.code}</code>
+          </CodeBlock>
+        );
+      }
+    });
+
+    return renderedContent;
+  };
 
   return (
     <div className="container">
@@ -139,30 +153,10 @@ export default function PostSlug() {
       </section>
       <section className="section--narrow">
         <div className="prose prose-lg prose-blue">
-          <StructuredText
-            data={post.content}
-            renderBlock={({ record }) => {
-              if (record.__typename === "ImageBlockRecord") {
-                return (
-                  <Image
-                    className="grid__image"
-                    data={record.image.responsiveImage}
-                  />
-                );
-              }
-
-              return (
-                <>
-                  <p>Don't know how to render a block!</p>
-                  <pre>{JSON.stringify(record, null, 2)}</pre>
-                </>
-              );
-            }}
-          />
+          {renderContent(post.content.value)}
         </div>
       </section>
       <section className="section">
-        <div className="section__title">Quiz</div>
         <ul className="grid">
           {morePosts.map((post) => (
             <li key={post.slug} className="grid__item">
