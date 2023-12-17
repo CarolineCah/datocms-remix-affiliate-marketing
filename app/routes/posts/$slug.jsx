@@ -94,8 +94,15 @@ export const loader = async ({ request, params }) => {
   });
 };
 
-export const meta = ({ data }) =>
-  toRemixMeta(data.datoQuerySubscription.initialData.post.seo);
+export const meta = ({
+  data: {
+    datoQuerySubscription: {
+      initialData: { post },
+    },
+  },
+}) => {
+  return toRemixMeta(post.seo);
+};
 
 export default function PostSlug() {
   const { datoQuerySubscription } = useLoaderData();
