@@ -25,6 +25,15 @@ export const loader = ({ request }) => {
           slug
           excerpt
           date
+          youtube {
+            height
+            provider
+            providerUid
+            thumbnailUrl
+            title
+            url
+            width
+          }
           coverImage {
             responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 }) {
               ...responsiveImageFragment

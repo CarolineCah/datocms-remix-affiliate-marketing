@@ -37,6 +37,15 @@ export const loader = async ({ request, params }) => {
           }
           title
           slug
+          youtube {
+            height
+            provider
+            providerUid
+            thumbnailUrl
+            title
+            url
+            width
+          }
           content {
             value
             blocks {
@@ -141,6 +150,42 @@ export default function PostSlug() {
     return renderedContent;
   };
 
+  const renderYouTubeSection = () => {
+    if (!post.youtube) return null;
+
+    const embedUrl = `https://www.youtube.com/embed/${post.youtube.providerUid}`;
+
+    return (
+      <section className="section">
+        <div>
+          <div
+            style={{
+              position: "relative",
+              paddingBottom: "56.25%",
+              height: 0,
+              overflow: "hidden",
+            }}
+          >
+            <iframe
+              src={embedUrl}
+              title={post.youtube.title}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+              }}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+      </section>
+    );
+  };
+
   return (
     <div className="container">
       <section className="section">
@@ -163,6 +208,7 @@ export default function PostSlug() {
           {renderContent(post.content.value)}
         </div>
       </section>
+      {renderYouTubeSection()}
       <section className="section">
         <ul className="grid">
           {morePosts.map((post) => (
