@@ -1,5 +1,5 @@
 .title {
-  font-size: 6.25rem;
+  font-size: 3em;
   letter-spacing: -0.04em;
   line-height: 1.2;
   font-weight: 700;
@@ -30,7 +30,24 @@
   margin-bottom: 1.25rem;
 }
 
+@media (min-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
+  .title {
+    font-size: 5em;
+  }
+}
+
+@media (max-width: 500px) {
+  .grid__title {
+    font-size: 5px;
+  }
+}
+
 .grid__image {
+  width: 100%;
+  height: auto;
   margin: 2rem 0;
   width: 100%;
   border-radius: 3px;
@@ -48,7 +65,7 @@
 }
 
 .grid__title {
-  font-size: 1.875rem;
+  font-size: 20px;
   line-height: 1.375;
   margin-bottom: 1rem;
 }

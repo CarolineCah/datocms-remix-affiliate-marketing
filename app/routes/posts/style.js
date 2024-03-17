@@ -56,4 +56,8 @@ export const CodeBlock = styled.pre`
   .token.number {
     color: #f78c6c;
   }
+  @media (max-width: 768px) {
+    font-size: 0.8em;
+    padding: 0.5em;
+  }
 `;
