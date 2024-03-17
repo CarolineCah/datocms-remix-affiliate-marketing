@@ -136,13 +136,32 @@ export default function PostSlug() {
           }
         });
 
+        if (index !== 0) {
+          renderedContent.push(<br key={`br-${index}`} />);
+        }
         renderedContent.push(<p key={index}>{paragraph}</p>);
       } else if (item.type === "code") {
         const language = item.language || "javascript";
-        return renderedContent.push(
+        if (index !== 0) {
+          renderedContent.push(<br key={`br-${index}`} />);
+        }
+        renderedContent.push(
           <CodeBlock className="line-numbers" key={index}>
             <code className={`language-${language}`}>{item.code}</code>
           </CodeBlock>
+        );
+      } else if (item.type.startsWith("heading")) {
+        const HeadingTag = `h2`;
+
+        if (index !== 0) {
+          renderedContent.push(<br key={`br-${index}`} />);
+        }
+        renderedContent.push(
+          <HeadingTag key={index}>
+            {item.children.map((child, childIndex) => (
+              <span key={childIndex}>{child.value}</span>
+            ))}
+          </HeadingTag>
         );
       }
     });
