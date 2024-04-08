@@ -124,8 +124,6 @@ export default function PostSlug() {
   const renderContent = (content) => {
     const renderedContent = [];
 
-    console.log(content, "content");
-
     content.document.children.forEach((item, index) => {
       if (item.type === "paragraph") {
         const paragraph = item.children.map((child, childIndex) => {
