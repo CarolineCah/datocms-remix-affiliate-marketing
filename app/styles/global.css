@@ -69,3 +69,58 @@ a:hover {
 .preview a {
   text-decoration: underline;
 }
+
+header {
+  width: 100%;
+  padding: 20px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: #300046;
+  transition: background-color 0.3s ease-in-out;
+  display: flex;
+  color: #ffffff;
+  justify-content: center;
+  color: white;
+}
+
+header.scrolled {
+  background-color: black;
+}
+
+.nav-link {
+  color: inherit;
+  transition: color 0.3s ease-in-out;
+  margin-right: 20px;
+  font-family: "Centra", sans-serif !important;
+  padding: 0 15px;
+  font-weight: 400;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: #cccccc;
+}
+
+@font-face {
+  font-family: "Centra";
+  src: url("/path/to/Centra-No2-Book.woff2") format("woff2"),
+    url("/path/to/Centra-No2-Book.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Centra";
+  src: url("/path/to/Centra-No2-Bold.woff2") format("woff2"),
+    url("/path/to/Centra-No2-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+
+.navbar,
+header {
+  font-family: "Centra", sans-serif;
+  font-weight: 400;
+}

@@ -30,72 +30,70 @@ export const loader = async ({ request, params }) => {
   return datoQuerySubscription({
     request,
     query: `
-      query PostBySlug($slug: String) {
-        post(filter: {slug: {eq: $slug}}) {
-          seo: _seoMetaTags {
-            ...metaTagsFragment
-          }
+    query PostBySlug($slug: String) {
+      post(filter: {slug: {eq: $slug}}) {
+        seo: _seoMetaTags {
+          ...metaTagsFragment
+        }
+        title
+        slug
+        youtube {
+          height
+          provider
+          providerUid
+          thumbnailUrl
           title
-          slug
-          youtube {
-            height
-            provider
-            providerUid
-            thumbnailUrl
-            title
-            url
-            width
-          }
-          content {
-            value
-            blocks {
-              __typename
-              ...on ImageBlockRecord {
-                id
-                image {
-                  responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 }) {
-                    ...responsiveImageFragment
-                  }
-                }
+          url
+          width
+        }
+        content {
+          value
+          blocks {
+            __typename
+            ... on ImageBlockRecord {
+              id
+              image {
+                url
               }
             }
           }
-          date
-          ogImage: coverImage{
-            url(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 })
-          }
-          coverImage {
-            responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 }) {
-              ...responsiveImageFragment
-            }
-          }
-          author {
-            name
-            picture {
-              url(imgixParams: {fm: jpg, fit: crop, w: 100, h: 100, sat: -100})
-            }
+        }
+        date
+        ogImage: coverImage {
+          url(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 })
+        }
+        coverImage {
+          responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 }) {
+            ...responsiveImageFragment
           }
         }
-        morePosts: allPosts(orderBy: date_DESC, first: 2, filter: {slug: {neq: $slug}}) {
-          title
-          slug
-          excerpt
-          date
-          coverImage {
-            responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 }) {
-              ...responsiveImageFragment
-            }
+        author {
+          name
+          picture {
+            url(imgixParams: {fm: jpg, fit: crop, w: 100, h: 100, sat: -100})
           }
-          author {
-            name
-            picture {
-              url(imgixParams: {fm: jpg, fit: crop, w: 100, h: 100, sat: -100})
-            }
-          }
-          }
+        }
       }
-      ${responsiveImageFragment}
-      ${metaTagsFragment}
+      morePosts: allPosts(orderBy: date_DESC, first: 2, filter: {slug: {neq: $slug}}) {
+        title
+        slug
+        excerpt
+        date
+        coverImage {
+          responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 }) {
+            ...responsiveImageFragment
+          }
+        }
+        author {
+          name
+          picture {
+            url(imgixParams: {fm: jpg, fit: crop, w: 100, h: 100, sat: -100})
+          }
+        }
+      }
+    }
+    ${responsiveImageFragment}
+    ${metaTagsFragment}    
     `,
     variables: {
       slug: params.slug,
@@ -126,6 +124,8 @@ export default function PostSlug() {
   const renderContent = (content) => {
     const renderedContent = [];
 
+    console.log(content, "content");
+
     content.document.children.forEach((item, index) => {
       if (item.type === "paragraph") {
         const paragraph = item.children.map((child, childIndex) => {
@@ -140,6 +140,15 @@ export default function PostSlug() {
           renderedContent.push(<br key={`br-${index}`} />);
         }
         renderedContent.push(<p key={index}>{paragraph}</p>);
+      } else if (item.__typename === "ImageBlockRecord") {
+        renderedContent.push(
+          <img
+            key={item.id}
+            src={item.image.url}
+            alt=""
+            className="content-image"
+          />
+        );
       } else if (item.type === "code") {
         const language = item.language || "javascript";
         if (index !== 0) {
@@ -151,7 +160,7 @@ export default function PostSlug() {
           </CodeBlock>
         );
       } else if (item.type.startsWith("heading")) {
-        const HeadingTag = `h2`;
+        const HeadingTag = `h${item.level}`;
 
         if (index !== 0) {
           renderedContent.push(<br key={`br-${index}`} />);
