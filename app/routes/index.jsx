@@ -6,6 +6,7 @@ import { Image, useQuerySubscription } from "react-datocms";
 import { responsiveImageFragment } from "~/lib/fragments";
 import { Avatar, links as avatarLinks } from "~/components/Avatar";
 import { Date, links as dateLinks } from "~/components/Date";
+import { Header } from "~/components/Header/Header";
 
 export function links() {
   return [
@@ -63,6 +64,7 @@ export default function Index() {
 
   return (
     <div className="container">
+      <Header />
       <section className="section">
         <div className="flex">
           <h1 className="title">
